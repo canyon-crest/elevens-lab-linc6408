@@ -1,4 +1,5 @@
 package Activity3;
+import java.util.ArrayList;
 /**
  * This class provides a convenient way to test shuffling methods.
  */
@@ -51,9 +52,21 @@ public class Shuffler3 {
 	 * @param values is an array of integers simulating cards to be shuffled.
 	 */
 	public static void perfectShuffle(int[] values) {
-		int middle = values.length/2;
+		int middle = (int) (values.length/2.0 + 0.5);
 		int[] newVals = new int[values.length];
-		
+		int i=0;
+		int j=0;
+		while (i<middle && j<middle) {
+			newVals[i+j] = values[i];
+			i++;
+			newVals[i+j] = values[middle+j];
+			j++;
+		}
+		if (i<middle) newVals[i+j] = values[i];
+		else if (j<middle) newVals[i+j] = values[middle+j];
+		for (int k=0; k<values.length; k++) {
+			values[k] = newVals[k];
+		}
 	}
 
 	/**
@@ -68,6 +81,10 @@ public class Shuffler3 {
 	 * @param values is an array of integers simulating cards to be shuffled.
 	 */
 	public static void selectionShuffle(int[] values) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 3 *** */
+		ArrayList<Integer> notSelected = new ArrayList<Integer>();
+		for (int n : values) notSelected.add(n);
+		for (int i=0; i<values.length; i++) {
+			values[i] = notSelected.remove((int) (Math.random() * (notSelected.size())));
+		}
 	}
 }
