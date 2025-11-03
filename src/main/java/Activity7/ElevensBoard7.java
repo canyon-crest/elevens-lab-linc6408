@@ -233,4 +233,10 @@ public class ElevensBoard7 {
 	private boolean containsJQK(List<Integer> selectedCards) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
 	}
+	
+	public static void printCards(ElevensBoard board) {
+		List<Integer> cIndexes = board.cardIndexes();
+	 	/* Your code goes here. */
+		for (int i : cIndexes) System.out.println(board.cardAt(i));
+	}
 }

@@ -55,7 +55,7 @@ public class ElevensBoard9 extends Board9 {
 	@Override
 	public boolean isLegal(List<Integer> selectedCards) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return false;
+		return containsPairSum11(selectedCards) || containsJQK(selectedCards);
 	}
 
 	/**
@@ -68,7 +68,27 @@ public class ElevensBoard9 extends Board9 {
 	 */
 	@Override
 	public boolean anotherPlayIsPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+//		System.out.println("NEW MOVE");
+		List<Integer> selected = new ArrayList<Integer>();
+		List<Integer> cardI = cardIndexes();
+		for (int i=0; i<cardI.size()-2; i++) {
+			selected.add(cardI.get(i));
+			for (int j=i+1; j<cardI.size()-1; j++) {
+				selected.add(cardI.get(j));
+//				System.out.println(cardAt(selected.get(0)).pointValue() + " " + cardAt(selected.get(1)).pointValue());
+				if (containsPairSum11(selected)) return true;
+				for (int k=j+1; k<cardI.size(); k++) {
+					selected.add(cardI.get(k));
+					if (containsJQK(selected)) return true;
+					int temp = selected.remove(0);
+					if (containsPairSum11(selected)) return true;
+					selected.add(0, temp);
+					selected.remove(2);
+				}
+				selected.remove(1);
+			}
+			selected.remove(0);
+		}
 		return false;
 	}
 
@@ -81,8 +101,7 @@ public class ElevensBoard9 extends Board9 {
 	 *              contain an 11-pair; false otherwise.
 	 */
 	private boolean containsPairSum11(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return false;
+		return selectedCards.size() == 2 && cardAt(selectedCards.get(0)).pointValue() + cardAt(selectedCards.get(1)).pointValue() == 11;
 	}
 
 	/**
@@ -94,7 +113,13 @@ public class ElevensBoard9 extends Board9 {
 	 *              include a jack, a queen, and a king; false otherwise.
 	 */
 	private boolean containsJQK(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return false;
+		if (selectedCards.size() != 3) return false;
+		int c0 = cardAt(selectedCards.get(0)).pointValue();
+		int c1 = cardAt(selectedCards.get(1)).pointValue();
+		int c2 = cardAt(selectedCards.get(2)).pointValue();
+		String r0 = cardAt(selectedCards.get(0)).rank();
+		String r1 = cardAt(selectedCards.get(1)).rank();
+		String r2 = cardAt(selectedCards.get(2)).rank();
+		return c0+c1+c2 == 0 && !(r0.equals(r1) || r0.equals(r2) || r1.equals(r2)); // if 3 cards aren't the same and add to 36 they must be 11, 12, and 13
 	}
 }
